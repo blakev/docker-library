@@ -3,6 +3,7 @@ FROM ubuntu:trusty
 MAINTAINER Blake VandeMerwe <blakev@null.net>
 
 ENV DEBUG           false
+ENV SERV_PORT       22067
 
 # 100 mbps
 ENV RATE_GLOBAL     100000000
@@ -13,6 +14,7 @@ ENV TIMEOUT_MSG     1m30s
 ENV TIMEOUT_NET     3m00s
 ENV PING_INT        0m45s
 
+ENV PUBLIC_IP       "0.0.0.0"
 ENV PROVIDED_BY     "syncthing-relay docker container"
 
 
@@ -21,9 +23,10 @@ RUN tar -xzvf /tmp/relaysrv.tar.gz && rm /tmp/relaysrv.tar.gz && mv relaysrv* /s
 RUN useradd --no-create-home -g users --uid 22070 relaysrv
 RUN chown relaysrv: /srv/relaysrv -R
 
-EXPOSE 22070 22067
+EXPOSE 22070 ${SERV_PORT}
 
 CMD /srv/relaysrv/relaysrv \
+    -listen="${PUBLIC_IP}:${SERV_PORT}" \
     -debug="${DEBUG}" \
     -global-rate="${RATE_GLOBAL}" \
     -per-session-rate="${RATE_SESSION}" \
