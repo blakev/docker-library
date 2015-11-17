@@ -20,12 +20,11 @@ ENV PROVIDED_BY     "syncthing-relay docker container"
 
 ADD https://github.com/syncthing/relaysrv/releases/download/v0.12.1/relaysrv-linux-amd64.tar.gz /tmp/relaysrv.tar.gz
 RUN tar -xzvf /tmp/relaysrv.tar.gz && rm /tmp/relaysrv.tar.gz && mv relaysrv* /srv/relaysrv
-RUN useradd --no-create-home -g users --uid 22070 relaysrv
-RUN chown relaysrv: /srv/relaysrv -R
 
 EXPOSE 22070 ${SERV_PORT}
 
 CMD /srv/relaysrv/relaysrv \
+    -keys="/srv/relaysrv" \
     -listen="${PUBLIC_IP}:${SERV_PORT}" \
     -debug="${DEBUG}" \
     -global-rate="${RATE_GLOBAL}" \
