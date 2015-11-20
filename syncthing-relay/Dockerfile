@@ -5,19 +5,20 @@ MAINTAINER Blake VandeMerwe <blakev@null.net>
 ENV DEBUG           false
 ENV SERV_PORT       22067
 
-# 100 mbps
-ENV RATE_GLOBAL     100000000
 # 10 mbps
-ENV RATE_SESSION    10000000
+ENV RATE_GLOBAL     10000000
+# 500 kbps
+ENV RATE_SESSION    500000
 
-ENV TIMEOUT_MSG     1m30s
-ENV TIMEOUT_NET     3m00s
-ENV PING_INT        0m45s
+ENV TIMEOUT_MSG     1m45s
+ENV TIMEOUT_NET     3m30s
+ENV PING_INT        1m15s
 
 ENV PUBLIC_IP       "0.0.0.0"
 ENV PROVIDED_BY     "syncthing-relay docker container"
 
 
+RUN apt-get update && apt-get install ca-certificates -y
 ADD https://github.com/syncthing/relaysrv/releases/download/v0.12.1/relaysrv-linux-amd64.tar.gz /tmp/relaysrv.tar.gz
 RUN tar -xzvf /tmp/relaysrv.tar.gz && rm /tmp/relaysrv.tar.gz && mv relaysrv* /srv/relaysrv
 
